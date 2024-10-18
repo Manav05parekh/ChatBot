@@ -126,7 +126,7 @@ python-dateutil
 python-dotenv
 pyttsx3
 pytz
-pywin32
+pywin32; platform_system == "Windows"
 PyYAML
 pyzmq
 referencing
