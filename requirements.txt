@@ -91,14 +91,14 @@ narwhals==1.9.4
 nest-asyncio==1.6.0
 networkx==3.3
 numba==0.60.0
-numpy>=1.20,<3.0
+numpy>=1.26.0,<3.0  # Adjusted numpy version to avoid conflicts
 openai==1.52.0
 openai-whisper==20240930
 opencv-contrib-python==4.9.0.80
 opencv-python==4.9.0.80
 orjson==3.10.7
 packaging==24.0
-pandas==2.2.2
+pandas>=2.2.2,<3.0  # Loosened pandas version to avoid conflicts
 parso==0.8.4
 pillow==10.3.0
 platformdirs==4.3.6
@@ -135,8 +135,8 @@ rich==13.9.2
 rpds-py==0.20.0
 rsa==4.9
 safetensors==0.4.5
-scipy==1.13.0
-seaborn==0.13.2
+scipy>=1.13.0,<2.0  # Loosened scipy version
+seaborn>=0.13.2,<0.14.0  # Loosened seaborn version
 setuptools==69.5.1
 shellingham==1.5.4
 six==1.16.0
