@@ -6,3 +6,5 @@ transformers
 python-dotenv
 google-generativeai
 scipy
+portaudio
+soundfile
