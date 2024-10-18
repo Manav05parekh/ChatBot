@@ -91,7 +91,7 @@ narwhals==1.9.4
 nest-asyncio==1.6.0
 networkx==3.3
 numba==0.60.0
-numpy==1.26.4
+numpy
 openai==1.52.0
 openai-whisper==20240930
 opencv-contrib-python==4.9.0.80
