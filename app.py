@@ -1,14 +1,9 @@
 import streamlit as st
 import os
 import json
-import numpy as np
-import sounddevice as sd
-import whisper  # For speech recognition
 from transformers import pipeline
 from dotenv import load_dotenv
 import google.generativeai as ai
-import tempfile
-from scipy.io import wavfile  # Import wavfile from scipy
 
 # Load environment variables
 load_dotenv()
@@ -21,9 +16,6 @@ model = ai.GenerativeModel("gemini-1.5-flash")
 # Initialize transformers pipelines
 sentiment_analyzer = pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english")
 intent_classifier = pipeline("text-classification", model="facebook/bart-large-mnli")  # Modify as needed
-
-# Initialize Whisper model for speech-to-text
-whisper_model = whisper.load_model("base")
 
 # Persistent memory file path
 MEMORY_FILE = "chat_history.json"
@@ -62,13 +54,6 @@ def get_gemini_response(question, conversation_history):
             return "Error: No response from Gemini."
     except Exception as e:
         return f"Error: {str(e)}"
-
-# Function to record audio
-def record_audio(duration):
-    fs = 44100  # Sample rate
-    recording = sd.rec(int(duration * fs), samplerate=fs, channels=1)
-    sd.wait()  # Wait until recording is finished
-    return recording.flatten()
 
 # Function to process the user question and generate a response
 def process_user_input(user_input):
@@ -126,31 +111,6 @@ user_input = st.text_input("Ask your question: ", value="", key="input", placeho
 
 # Ask button
 submit = st.button("Ask")
-
-# Button to record live audio input
-record_audio_button = st.button("Record Live Audio")
-
-if record_audio_button:
-    with st.spinner("Recording..."):
-        # Record audio for 5 seconds (adjust as needed)
-        audio_data = record_audio(5)
-        st.success("Recording complete!")
-
-        # Save audio data to a temporary file for Whisper to process
-        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.wav')
-        wavfile.write(temp_file.name, 44100, (audio_data * 32767).astype(np.int16))  # Scale to int16
-
-        # Transcribe audio using Whisper
-        audio_input = whisper_model.transcribe(temp_file.name)
-        st.write(f"Transcribed text: {audio_input['text']}")
-
-        # Set the transcribed text directly as the input value
-        user_input = audio_input['text']  # Store transcribed text temporarily for this iteration
-
-        # Process the user input to get a response
-        response = process_user_input(user_input)
-        st.subheader("🤖 Assistant Response:")
-        st.write(response)
 
 # If submit button is clicked and user input is provided
 if submit and user_input:
